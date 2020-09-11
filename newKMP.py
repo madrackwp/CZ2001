@@ -96,7 +96,7 @@ lps = [0]*length
 computeLPSArray(pattern, length, lps)
 FT = np.empty((len_characters,length))
 my_dict = computeFailureTable(characters, pattern, lps, FT)
-printFailureTable(lps,my_dict)
+# printFailureTable(lps,my_dict)
 ImprovedKMPAlgo(text, pattern, my_dict)
 
 print(timeit.timeit('ImprovedKMPAlgo(text, pattern, my_dict)',
