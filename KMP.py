@@ -6,6 +6,9 @@ import timeit
 # find longest prefix that is also a suffix
 
 
+# def generateGenome(length):
+
+
 def computeLPSArray(pat, M, lps):
     length = 0
     i = 1
