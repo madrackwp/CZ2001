@@ -1,5 +1,10 @@
+# https://www.geeksforgeeks.org/real-time-optimized-kmp-algorithm-for-pattern-searching/
+
 import numpy as np
 
+import timeit
+
+# find longest prefix that is also a suffix
 def computeLPSArray(pat, M, lps):
     length = 0
     i = 1
@@ -36,19 +41,63 @@ def computeFailureTable(characters, pattern, lps, FT):
                     FT[j][l] = FT[j][lps[l]-1]
             l += 1
         j += 1
+    FT.astype(int)
+    dictionary = {characters[i]: FT[i] for i in range(len(characters))} 
+    for key in dictionary: 
+        dictionary[key] = (dictionary[key]).astype(int)
+    return dictionary
 
-def printFailureTable(characters, FT): 
-    for i in range(len(characters)): 
-        print(characters[i], end=" ")
-        print(FT[i])
+def printFailureTable(lps,dictionary): 
+    print(lps)
+    for key in dictionary: 
+        print(key, dictionary[key])
+
+def ImprovedKMPAlgo(text, pattern, dictionary):
+    indexList = []
+    textLength = len(text)
+    patternLength = len(pattern)
+    a = 0
+    b = 0
+    while a < textLength:
+        if text[a] == pattern[b]:
+            # match the pattern with the text, and the increase the counter a and b
+            a += 1
+            b += 1
+        else:
+            if b != 0:
+                if text[a] not in dictionary: 
+                # if the character at text index is not in the pattern, instantly move on to check next character
+                    b = 0
+                else: 
+                # update j to be the longest suffix which is also a prefix of the pattern
+                    b = (dictionary[text[a]])[b-1]
+                a += 1
+            else: 
+                a += 1
+        if b == patternLength:
+            # if b == patternLength, means entire pattern that matches has been found
+            # append the index of the start of the pattern to the list
+            indexList.append(a-b+1)
+            b = lps[b-1]
+
+    # if not indexList:
+        # print("Pattern not found")
+    # else:
+        # print("Pattern found at Positions:", end=" ")
+        # print(indexList)
+
 
 text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
 pattern = "TTTATACCTTCC"
 length = len(pattern)
-characters = list(set(text))
+characters = list(set(pattern))
 len_characters = len(characters)
 lps = [0]*length
 computeLPSArray(pattern, length, lps)
 FT = np.empty((len_characters,length))
-computeFailureTable(characters, pattern, lps, FT)
-printFailureTable(characters, FT)
+my_dict = computeFailureTable(characters, pattern, lps, FT)
+printFailureTable(lps,my_dict)
+ImprovedKMPAlgo(text, pattern, my_dict)
+
+print(timeit.timeit('ImprovedKMPAlgo(text, pattern, my_dict)',
+                    'from __main__ import ImprovedKMPAlgo, text, pattern, my_dict', number=1000))

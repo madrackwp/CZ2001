@@ -4,11 +4,6 @@
 import timeit
 
 # find longest prefix that is also a suffix
-
-
-# def generateGenome(length):
-
-
 def computeLPSArray(pat, M, lps):
     length = 0
     i = 1
@@ -65,12 +60,13 @@ def KMPAlgo(text, pattern):
             indexList.append(a-b+1)
             b = lps[b-1]
 
-    #if not indexList:
-    #   print("Pattern not found")
-    #else:
-    #    print("Pattern found at Positions:", end=" ")
-    #    print(indexList)
+    # if not indexList:
+        # print("Pattern not found")
+    # else:
+        # print("Pattern found at Positions:", end=" ")
+        # print(indexList)
 
+KMPAlgo(text, pattern)
 
 print(timeit.timeit('KMPAlgo(text, pattern)',
                     'from __main__ import KMPAlgo, text, pattern', number=1000))
