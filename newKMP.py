@@ -1,10 +1,11 @@
 # https://www.geeksforgeeks.org/real-time-optimized-kmp-algorithm-for-pattern-searching/
 
 import numpy as np
-
 import timeit
 
 # find longest prefix that is also a suffix
+
+
 def computeLPSArray(pat, M, lps):
     length = 0
     i = 1
@@ -28,17 +29,19 @@ def computeLPSArray(pat, M, lps):
                 i += 1
 
 # compute failure table
-def computeFailureTable(characters, pattern, lps, FT): 
+
+
+def computeFailureTable(characters, pattern, lps, FT):
     j = 0
-    for i in characters: 
+    for i in characters:
         l = 0
-        while l < length: 
-            if pattern[lps[l]] == i: 
-            # check if the pattern[lps[i]] is the particular character, if so, just add 1 to lps[1] for corresponding FT
+        while l < length:
+            if pattern[lps[l]] == i:
+                # check if the pattern[lps[i]] is the particular character, if so, just add 1 to lps[1] for corresponding FT
                 FT[j][l] = lps[l] + 1
-            else: 
+            else:
                 # if lps[l] is 0, then corresponding ft is 0 as well
-                if lps[l] == 0: 
+                if lps[l] == 0:
                     FT[j][l] = 0
                 # else, similar logic to lps, it will be equals to ft[lps[l]-1]
                 else:
@@ -47,16 +50,19 @@ def computeFailureTable(characters, pattern, lps, FT):
         j += 1
     FT.astype(int)
     # convert to dictionary where each character is a key, and the array is the corresponding value
-    dictionary = {characters[i]: FT[i] for i in range(len(characters))} 
-    for key in dictionary: 
+    dictionary = {characters[i]: FT[i] for i in range(len(characters))}
+    for key in dictionary:
         dictionary[key] = (dictionary[key]).astype(int)
     return dictionary
 
 # print failure table
-def printFailureTable(lps,dictionary): 
+
+
+def printFailureTable(lps, dictionary):
     print(lps)
-    for key in dictionary: 
+    for key in dictionary:
         print(key, dictionary[key])
+
 
 def ImprovedKMPAlgo(text, pattern, dictionary):
     indexList = []
@@ -71,14 +77,14 @@ def ImprovedKMPAlgo(text, pattern, dictionary):
             b += 1
         else:
             if b != 0:
-                if text[a] not in dictionary: 
-                # if the character at text index is not in the pattern, instantly move on to check next character
+                if text[a] not in dictionary:
+                    # if the character at text index is not in the pattern, instantly move on to check next character
                     b = 0
-                else: 
-                # update j to be the longest suffix which is also a prefix of the pattern
+                else:
+                    # update j to be the longest suffix which is also a prefix of the pattern
                     b = (dictionary[text[a]])[b-1]
                 a += 1
-            else: 
+            else:
                 a += 1
         if b == patternLength:
             # if b == patternLength, means entire pattern that matches has been found
@@ -93,14 +99,15 @@ def ImprovedKMPAlgo(text, pattern, dictionary):
         # print(indexList)
 
 
-text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
+# text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
+text = open('genomeSequence.txt', 'r').read()
 pattern = "TTTATACCTTCC"
 length = len(pattern)
 characters = list(set(pattern))
 len_characters = len(characters)
 lps = [0]*length
 computeLPSArray(pattern, length, lps)
-FT = np.empty((len_characters,length))
+FT = np.empty((len_characters, length))
 my_dict = computeFailureTable(characters, pattern, lps, FT)
 # printFailureTable(lps,my_dict)
 ImprovedKMPAlgo(text, pattern, my_dict)
