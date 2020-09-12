@@ -1,4 +1,5 @@
 import timeit
+import time
 
 # 1. Extract the part of the string to be tested
 # 2. Compare the sliced string with the pattern
@@ -13,36 +14,32 @@ import timeit
 # Added 2 more patterns to front and back of text
 text = open('genomeSequence.txt', 'r').read().upper()
 # This is the pattern that the algorithm will scan for
-pattern = "TTTATACCTTCC"
+pattern = "TGACCTATGAT"
 # pattern = "DAD"
 
 
 def bruteForce(text, pattern):
     patternLength = len(pattern)
-    # print(patternLength)
+
     textLength = len(text)
-    print(textLength)
-    print(text[10])
 
     indexStart = 0
     indexEnd = patternLength
     indexList = list()
-    # print(type(indexList))
 
     while (indexEnd != len(text)+1):
         textToScan = text[indexStart:indexEnd]
-        # print(textToScan, len(textToScan))
 
         if (textToScan == pattern):
-            # print("SAME @ index: ", indexStart)
             indexList.append(indexStart+1)
-        # else:
-        #     print("DIFF")
         indexStart += 1
         indexEnd += 1
 
-    # print(indexList)
 
+print("Average time for 1000 iterations: {}".format(timeit.timeit('bruteForce(text, pattern)',
+                                                                  'from __main__ import bruteForce, text, pattern', number=1000)/1000))
 
-print(timeit.timeit('bruteForce(text, pattern)',
-                    'from __main__ import bruteForce, text, pattern', number=1))
+# before = time.time()
+# bruteForce(text, pattern)
+# after = time.time()
+# print(after-before)

@@ -1,6 +1,5 @@
 # https://www.youtube.com/watch?v=4jY57Ehc14Y&ab_channel=WebofStories-LifeStoriesofRemarkablePeople
 # https://www.geeksforgeeks.org/python-program-for-kmp-algorithm-for-pattern-searching-2/
-
 import timeit
 
 # find longest prefix that is also a suffix
@@ -68,9 +67,6 @@ def KMPAlgo(text, pattern):
     # else:
         # print("Pattern found at Positions:", end=" ")
         # print(indexList)
-
-
-KMPAlgo(text, pattern)
-
+# KMPAlgo(text, pattern)
 print(timeit.timeit('KMPAlgo(text, pattern)',
                     'from __main__ import KMPAlgo, text, pattern', number=1000))
