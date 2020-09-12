@@ -27,26 +27,32 @@ def computeLPSArray(pat, M, lps):
                 lps[i] = 0
                 i += 1
 
+# compute failure table
 def computeFailureTable(characters, pattern, lps, FT): 
     j = 0
     for i in characters: 
         l = 0
         while l < length: 
             if pattern[lps[l]] == i: 
+            # check if the pattern[lps[i]] is the particular character, if so, just add 1 to lps[1] for corresponding FT
                 FT[j][l] = lps[l] + 1
             else: 
+                # if lps[l] is 0, then corresponding ft is 0 as well
                 if lps[l] == 0: 
                     FT[j][l] = 0
-                else: 
+                # else, similar logic to lps, it will be equals to ft[lps[l]-1]
+                else:
                     FT[j][l] = FT[j][lps[l]-1]
             l += 1
         j += 1
     FT.astype(int)
+    # convert to dictionary where each character is a key, and the array is the corresponding value
     dictionary = {characters[i]: FT[i] for i in range(len(characters))} 
     for key in dictionary: 
         dictionary[key] = (dictionary[key]).astype(int)
     return dictionary
 
+# print failure table
 def printFailureTable(lps,dictionary): 
     print(lps)
     for key in dictionary: 
