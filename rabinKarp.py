@@ -8,141 +8,76 @@ def hashing(toHash):
     for x in range(length):
         characterValue = ord(toHash[x])
         position = length - x - 1
-        hashcode += characterValue*10**position
+        hashcode += characterValue*4**position
     return hashcode
 
 
-# def rehash(toRehash, lengthOfPattern, hashValue):
-#     valueOfFirst = ord(toRehash[0])*10**(lengthOfPattern-1)
-#     valueOfLast = ord(toRehash[lengthOfPattern-1])
-#     hashValue = hashValue - valueOfFirst
-#     hashValue *= 10
-#     hashValue += valueOfLast
-#     return hashValue
-
-def search(pat, txt, q):
-    indexArray = []
-    d = 256
-    M = len(pat)
-    N = len(txt)
-    i = 0
-    j = 0
-    p = 0    # hash value for pattern
-    t = 0    # hash value for txt
-    h = 1
-
-    # The value of h would be "pow(d, M-1)%q"
-    for i in range(M-1):
-        h = (h*d) % q
-
-    # Calculate the hash value of pattern and first window
-    # of text
-    for i in range(M):
-        p = (d*p + ord(pat[i])) % q
-        t = (d*t + ord(txt[i])) % q
-
-    # Slide the pattern over text one by one
-    for i in range(N-M+1):
-        # Check the hash values of current window of text and
-        # pattern if the hash values match then only check
-        # for characters on by one
-        if p == t:
-            # Check for characters one by one
-            for j in range(M):
-                if txt[i+j] != pat[j]:
-                    break
-
-            j += 1
-            # if p == t and pat[0...M-1] = txt[i, i+1, ...i+M-1]
-            if j == M:
-                indexArray.append(i)
-            #     print("Pattern found at index " + str(i) )
-
-        # Calculate hash value for next window of text: Remove
-        # leading digit, add trailing digit
-        if i < N-M:
-            t = (d*(t-ord(txt[i])*h) + ord(txt[i+M])) % q
-
-            # We might get negative values of t, converting it to
-            # positive
-            if t < 0:
-                t = t+q
+# def RKNaive(text, pattern):
+#     patternHash = hashing(pattern)
+#     indexArray = []
+#     sturiousHits = 0
+#     # print(patternHash)
+#     for x in range(len(text)):
+#         textToScan = text[x:len(pattern)+x]
+#         if (len(textToScan) != len(pattern)):
+#             break
+#         textHash = hashing(textToScan)
+#         if (textHash == patternHash):
+#             print("Hit")
+#             if (pattern == textToScan):
+#                 print("found!")
+#                 indexArray.append(x)
+#             else:
+#                 print("Sturious Hit")
+#                 sturiousHits += 1
+#         # else:
+#         #     print("Not found")
+#     print(indexArray)
+#     print(sturiousHits)
 
 
-def RKNaive(text, pattern):
-    patternHash = hashing(pattern)
-    indexArray = []
-    sturiousHits = 0
-    # print(patternHash)
-    for x in range(len(text)):
-        textToScan = text[x:len(pattern)+x]
-        if (len(textToScan) != len(pattern)):
-            break
-        textHash = hashing(textToScan)
-        if (textHash == patternHash):
-            print("Hit")
-            if (pattern == textToScan):
-                print("found!")
-                indexArray.append(x)
-            else:
-                print("Sturious Hit")
-                sturiousHits += 1
-        # else:
-        #     print("Not found")
-    print(indexArray)
-    print(sturiousHits)
-
-
-def RKRollingHash(text, pattern):
-    sturiousHits = 0
-    patternHash = hashing(pattern)
-    indexArray = []
+def RKRollingHash(text, pattern, alphabetSize):
+    """
+    This function takes in 3 arguments:
+    1. text -> This is the entire text that is to be scanned
+    2. pattern -> The function will be scanning the text for this string
+    3. alphabetSize -> This input will be the total number of characters possible present in the text
+    """
+    patternHash = hashing(
+        pattern)  # Calls the hashing function onto the pattern to generate a hash code for the pattern
+    indexArray = []  # This is the array that will store the indexes of all occurences of the pattern in the text
+    # This slices the first window of text to be matched with the pattern
     textToScan = text[0:len(pattern)]
+    # Calls the hashing function to get its hashcode
     textHash = hashing(textToScan)
     textLen = len(text)
     patternLen = len(pattern)
-    index = 0
-    while (index != textLen-patternLen+1):
+    # This multiplier is calculated to aid in the rolling hash, this value along with the character value will be subtracted from the textHash later on
+    multiplier = alphabetSize**(patternLen-1)
+    for i in range(textLen - patternLen + 1):
         if (patternHash == textHash):
-            if (textToScan == pattern):
-                indexArray.append(index)
-            else:
-                sturiousHits += 1
+            # If the patternHash matches the textHash, we will need to conduct a naive search on the the strings to see if they match
+            for j in range(patternLen):
+                if (text[i+j] != pattern[j]):
+                    break
+            if (j+1 == patternLen):
+                indexArray.append(i)
 
-            oldChar = textToScan[0]
-            index += 1
-            textToScan = text[index: len(pattern)+index]
-            newChar = textToScan[-1]
-            textHash -= ord(oldChar)*(10**(len(pattern)-1))
-            textHash *= 10
-            textHash += ord(newChar)
-        else:
-            oldChar = textToScan[0]
-            index += 1
-            textToScan = text[index: len(pattern)+index]
-            newChar = textToScan[-1]
-            textHash -= ord(oldChar)*(10**(len(pattern)-1))
-            textHash *= 10
-            textHash += ord(newChar)
-    # print(indexArray)
-    # print("No. of sturious hits: {}".format(sturiousHits))
+        # This is the rolling hash that calculates the hashcode for the next window in the text
+        if (i < textLen-patternLen):
+            textHash = (
+                textHash - ord(text[i])*multiplier)*alphabetSize + ord(text[i + patternLen])
+
+    print(indexArray)
 
 
 # text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
 # text = "TTTATACCTTCCCG"
-text = open('genomeSequence.txt', 'r').read().upper()
+text = open('genomeSequence2.txt', 'r').read().upper()
 pattern = "TGACCTATGAT"
-q = 29
-# text = "ABCDEFGHGFEDCBCDA"
-# pattern = "BCD"
-# print(timeit.timeit('RKNaive(text, pattern)',
-#                     'from __main__ import RKNaive, text, pattern', number=1000))
-
-# print("Average time for 1000 iterations: {}".format(timeit.timeit('search(text, pattern, q)',
-#                                                                   'from __main__ import search, text, pattern, q', number=1000)/1000))
 before = time.time()
-# # # RKNaive(text, pattern)
-# # RKRollingHash(text, pattern)
-search(pattern, text, 29)
+# RKNaive(text, pattern)
+RKRollingHash(text, pattern, alphabetSize=4)
+# search(pattern, text, q)
 after = time.time()
 print(after-before)

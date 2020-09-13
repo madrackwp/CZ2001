@@ -1,7 +1,7 @@
 # https://www.youtube.com/watch?v=4jY57Ehc14Y&ab_channel=WebofStories-LifeStoriesofRemarkablePeople
 # https://www.geeksforgeeks.org/python-program-for-kmp-algorithm-for-pattern-searching-2/
 import timeit
-
+import time
 # find longest prefix that is also a suffix
 
 
@@ -29,8 +29,8 @@ def computeLPSArray(pat, M, lps):
 
 
 # text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
-text = open('genomeSequence.txt', 'r').read()
-pattern = "TTTATACCTTCC"
+text = open('genomeSequence2.txt', 'r').read().upper()
+pattern = "CACGACTGCTCGCT"
 # pattern = "DAD" (to test failed case)
 # create a list to record the indexes where matches are found
 
@@ -62,11 +62,17 @@ def KMPAlgo(text, pattern):
             indexList.append(a-b+1)
             b = lps[b-1]
 
-    # if not indexList:
-        # print("Pattern not found")
-    # else:
-        # print("Pattern found at Positions:", end=" ")
-        # print(indexList)
+    if not indexList:
+        print("Pattern not found")
+    else:
+        print("Pattern found at Positions:", end=" ")
+        print(indexList)
+
+
 # KMPAlgo(text, pattern)
-print(timeit.timeit('KMPAlgo(text, pattern)',
-                    'from __main__ import KMPAlgo, text, pattern', number=1000))
+# print(timeit.timeit('KMPAlgo(text, pattern)',
+#                     'from __main__ import KMPAlgo, text, pattern', number=1000))
+before = time.time()
+KMPAlgo(text, pattern)
+after = time.time()
+print(after-before)

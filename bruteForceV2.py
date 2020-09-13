@@ -12,7 +12,7 @@ import time
 # text = "ADADADADADADADADADADADADAD"
 # text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
 # Added 2 more patterns to front and back of text
-text = open('genomeSequence.txt', 'r').read().upper()
+text = open('genomeSequence2.txt', 'r').read().upper()
 # This is the pattern that the algorithm will scan for
 pattern = "TGACCTATGAT"
 # pattern = "DAD"
@@ -25,21 +25,23 @@ def bruteForce(text, pattern):
 
     indexStart = 0
     indexEnd = patternLength
-    indexList = list()
+    indexArray = []
 
     while (indexEnd != len(text)+1):
         textToScan = text[indexStart:indexEnd]
 
         if (textToScan == pattern):
-            indexList.append(indexStart+1)
+            indexArray.append(indexStart+1)
         indexStart += 1
         indexEnd += 1
 
+    print(indexArray)
 
-print("Average time for 1000 iterations: {}".format(timeit.timeit('bruteForce(text, pattern)',
-                                                                  'from __main__ import bruteForce, text, pattern', number=1000)/1000))
 
-# before = time.time()
-# bruteForce(text, pattern)
-# after = time.time()
-# print(after-before)
+# print("Average time for 1000 iterations: {}".format(timeit.timeit('bruteForce(text, pattern)',
+    #   'from __main__ import bruteForce, text, pattern', number=1000)/1000))
+
+before = time.time()
+bruteForce(text, pattern)
+after = time.time()
+print(after-before)
