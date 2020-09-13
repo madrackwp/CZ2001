@@ -1,32 +1,45 @@
 import time
+from Bio import SeqIO
+import fastaparser
 
-text = open('genomeSequence2.txt', 'r').read().upper()
-# This is the pattern that the algorithm will scan for
-pattern = "TGACCTATGAT"
-# pattern = "DAD"
+# text = open('genomeSequence2.txt', 'r').read().upper()
 
 
 def bruteForce(text, pattern):
     patternLength = len(pattern)
-
     textLength = len(text)
-
     indexStart = 0
     indexEnd = patternLength
     indexArray = []
 
     while (indexEnd != len(text)+1):
-        textToScan = text[indexStart:indexEnd]
-
+        textToScan = str(text[indexStart:indexEnd])
         if (textToScan == pattern):
             indexArray.append(indexStart+1)
         indexStart += 1
         indexEnd += 1
 
-    print(indexArray)
+    if (indexArray):
+        print(indexArray)
+    else:
+        print("No matches found!")
 
 
-before = time.time()
-bruteForce(text, pattern)
-after = time.time()
-print(after-before)
+path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+text = next(SeqIO.parse(path, "fasta"))
+# print(type(text))
+# This is the pattern that the algorithm will scan for,
+# pattern = "AGAGAT"
+# pattern = "DAD"
+# print(repr(text.seq))
+with open(path) as fasta_file:
+    parser = fastaparser.Reader(fasta_file)
+    for seq in parser:
+        # seq is a FastaSequence object
+        print('ID:', seq.id)
+        print('Description:', seq.description)
+        print('Sequence:', seq.sequence_as_string())
+        print()
+
+
+# bruteForce(text, pattern)
