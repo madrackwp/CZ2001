@@ -2,13 +2,13 @@ import timeit
 import time
 
 
-def hashing(toHash):
+def hashing(toHash, alphabetSize):
     length = len(toHash)
     hashcode = 0
     for x in range(length):
         characterValue = ord(toHash[x])
         position = length - x - 1
-        hashcode += characterValue*4**position
+        hashcode += characterValue*alphabetSize**position
     return hashcode
 
 
@@ -44,12 +44,12 @@ def RKRollingHash(text, pattern, alphabetSize):
     3. alphabetSize -> This input will be the total number of characters possible present in the text
     """
     patternHash = hashing(
-        pattern)  # Calls the hashing function onto the pattern to generate a hash code for the pattern
+        pattern, alphabetSize)  # Calls the hashing function onto the pattern to generate a hash code for the pattern
     indexArray = []  # This is the array that will store the indexes of all occurences of the pattern in the text
     # This slices the first window of text to be matched with the pattern
     textToScan = text[0:len(pattern)]
     # Calls the hashing function to get its hashcode
-    textHash = hashing(textToScan)
+    textHash = hashing(textToScan, alphabetSize)
     textLen = len(text)
     patternLen = len(pattern)
     # This multiplier is calculated to aid in the rolling hash, this value along with the character value will be subtracted from the textHash later on
@@ -71,13 +71,10 @@ def RKRollingHash(text, pattern, alphabetSize):
     print(indexArray)
 
 
-# text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
-# text = "TTTATACCTTCCCG"
 text = open('genomeSequence2.txt', 'r').read().upper()
 pattern = "TGACCTATGAT"
 before = time.time()
-# RKNaive(text, pattern)
+# alphabetSize is chosen as 4 here because there are only 4 bases in the genome sequence A,C,T and G
 RKRollingHash(text, pattern, alphabetSize=4)
-# search(pattern, text, q)
 after = time.time()
 print(after-before)
