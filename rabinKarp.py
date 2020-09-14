@@ -72,14 +72,22 @@ def RKRollingHash(text, pattern, alphabetSize):
     print(indexArray)
 
 
+# path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+# text = next(SeqIO.parse(path, "fasta"))
+# print(len(text))
+# text = str(text)
+# print(len(text))
+# pattern = "TGACCTATGAT"
 path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
-text = next(SeqIO.parse(path, "fasta"))
-print(len(text))
-text = str(text)
-print(len(text))
-pattern = "TGACCTATGAT"
-# before = time.time()
+pattern = "AAAACCGACGGTC"
+f = open(path, "r")
+fileStr = f.read()
+f.close()
+
+fileStr = fileStr.split("\n", 1)[1]
+text = fileStr.replace("\n", "")
+before = time.time()
 # # alphabetSize is chosen as 4 here because there are only 4 bases in the genome sequence A,C,T and G
 RKRollingHash(text, pattern, alphabetSize=4)
-# after = time.time()
-# print(after-before)
+after = time.time()
+print(after-before)
