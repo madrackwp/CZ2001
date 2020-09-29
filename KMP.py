@@ -53,6 +53,7 @@ def KMPAlgo(text, pattern):
     lps = [0]*patternLength
     # compute LPS first
     computeLPSArray(pattern, patternLength, lps)
+    print(lps)
     a = 0
     b = 0
     while a < textLength:
