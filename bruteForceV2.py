@@ -1,6 +1,6 @@
 import time
-from Bio import SeqIO
-import fastaparser
+#  from Bio import SeqIO
+#  import fastaparser
 
 
 def bruteForce(text, pattern):
@@ -23,8 +23,9 @@ def bruteForce(text, pattern):
         print("No matches found!")
 
 
-path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
-pattern = "AAAACCGACGGTC"
+path = "C:\\Users\\user\\Desktop\\Repositories\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+# path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+pattern = "CAAGCAAACTGATTCAAG"
 f = open(path, "r")
 fileStr = f.read()
 f.close()
