@@ -86,11 +86,11 @@ def ImprovedKMPAlgo(text, pattern, dictionary):
             indexList.append(a-b+1)
             b = lps[b-1]
 
-    # if not indexList:
-        # print("Pattern not found")
-    # else:
-        # print("Pattern found at Positions:", end=" ")
-        # print(indexList)
+    if not indexList:
+        print("Pattern not found")
+    else:
+        print("Pattern found at Positions:", end=" ")
+        print(indexList)
 
 
 text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
@@ -102,8 +102,8 @@ lps = [0]*length
 computeLPSArray(pattern, length, lps)
 FT = np.empty((len_characters,length))
 my_dict = computeFailureTable(characters, pattern, lps, FT)
-# printFailureTable(lps,my_dict)
+printFailureTable(lps,my_dict)
 ImprovedKMPAlgo(text, pattern, my_dict)
 
-print(timeit.timeit('ImprovedKMPAlgo(text, pattern, my_dict)',
-                    'from __main__ import ImprovedKMPAlgo, text, pattern, my_dict', number=1000))
+# print(timeit.timeit('ImprovedKMPAlgo(text, pattern, my_dict)',
+                    # 'from __main__ import ImprovedKMPAlgo, text, pattern, my_dict', number=1000))
