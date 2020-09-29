@@ -1,79 +1,93 @@
 import timeit
+import time
+from Bio import SeqIO
 
 
-def hashing(toHash):
+def hashing(toHash, alphabetSize):
     length = len(toHash)
     hashcode = 0
     for x in range(length):
         characterValue = ord(toHash[x])
         position = length - x - 1
-        hashcode += characterValue*10**position
+        hashcode += characterValue*alphabetSize**position
     return hashcode
 
 
-def rehash(toRehash, lengthOfPattern, hashValue):
-    valueOfFirst = ord(toRehash[0])*10**(lengthOfPattern-1)
-    valueOfLast = ord(toRehash[lengthOfPattern-1])
-    hashValue = hashValue - valueOfFirst
-    hashValue *= 10
-    hashValue += valueOfLast
-    return hashValue
+# def RKNaive(text, pattern):
+#     patternHash = hashing(pattern)
+#     indexArray = []
+#     sturiousHits = 0
+#     # print(patternHash)
+#     for x in range(len(text)):
+#         textToScan = text[x:len(pattern)+x]
+#         if (len(textToScan) != len(pattern)):
+#             break
+#         textHash = hashing(textToScan)
+#         if (textHash == patternHash):
+#             print("Hit")
+#             if (pattern == textToScan):
+#                 print("found!")
+#                 indexArray.append(x)
+#             else:
+#                 print("Sturious Hit")
+#                 sturiousHits += 1
+#         # else:
+#         #     print("Not found")
+#     print(indexArray)
+#     print(sturiousHits)
 
 
-def v1(text, pattern):
-    patternHash = hashing(pattern)
-    indexArray = []
-    # print(patternHash)
-    for x in range(len(text)):
-        textToScan = text[x:len(pattern)+x]
-        if (len(textToScan) != len(pattern)):
-            break
-        textHash = hashing(textToScan)
-        if (textHash == patternHash):
-            # print("found!")
-            indexArray.append(x)
-        # else:
-        #     print("Not found")
-    #print(indexArray)
-
-
-def v2(text, pattern):
-    patternHash = hashing(pattern)
-    indexArray = []
+def RKRollingHash(text, pattern, alphabetSize):
+    """
+    This function takes in 3 arguments:
+    1. text -> This is the entire text that is to be scanned
+    2. pattern -> The function will be scanning the text for this string
+    3. alphabetSize -> This input will be the total number of characters possible present in the text
+    """
+    patternHash = hashing(
+        pattern, alphabetSize)  # Calls the hashing function onto the pattern to generate a hash code for the pattern
+    indexArray = []  # This is the array that will store the indexes of all occurences of the pattern in the text
+    # This slices the first window of text to be matched with the pattern
     textToScan = text[0:len(pattern)]
-    textHash = hashing(textToScan)
-    index = 0
-    while (index != len(text)-len(pattern)):
+    # Calls the hashing function to get its hashcode
+    textHash = hashing(textToScan, alphabetSize)
+    textLen = len(text)
+    patternLen = len(pattern)
+    # This multiplier is calculated to aid in the rolling hash, this value along with the character value will be subtracted from the textHash later on
+    multiplier = alphabetSize**(patternLen-1)
+    for i in range(textLen - patternLen + 1):
         if (patternHash == textHash):
-            indexArray.append(index)
-            oldChar = textToScan[0]
-            index += 1
-            textToScan = text[index: len(pattern)+index]
-            newChar = textToScan[-1]
-            textHash -= ord(oldChar)*(10**(len(pattern)-1))
-            textHash *= 10
-            textHash += ord(newChar)
-        else:
-            oldChar = textToScan[0]
-            index += 1
-            textToScan = text[index: len(pattern)+index]
-            newChar = textToScan[-1]
-            textHash -= ord(oldChar)*(10**(len(pattern)-1))
-            textHash *= 10
-            textHash += ord(newChar)
-    #print(indexArray)
+            # If the patternHash matches the textHash, we will need to conduct a naive search on the the strings to see if they match
+            for j in range(patternLen):
+                if (text[i+j] != pattern[j]):
+                    break
+            if (j+1 == patternLen):
+                indexArray.append(i)
+
+        # This is the rolling hash that calculates the hashcode for the next window in the text
+        if (i < textLen-patternLen):
+            textHash = (
+                textHash - ord(text[i])*multiplier)*alphabetSize + ord(text[i + patternLen])
+
+    print(indexArray)
 
 
-text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
-# text = "TTTATACCTTCCCG"
-pattern = "TTTATACCTTCC"
-# text = "ABCDEFGHGFEDCBCDA"
-# pattern = "BCD"
-print(timeit.timeit('v1(text, pattern)',
-                     'from __main__ import v1, text, pattern', number=1000))
+# path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+# text = next(SeqIO.parse(path, "fasta"))
+# print(len(text))
+# text = str(text)
+# print(len(text))
+# pattern = "TGACCTATGAT"
+path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+pattern = "AAAACCGACGGTC"
+f = open(path, "r")
+fileStr = f.read()
+f.close()
 
-print(timeit.timeit('v2(text, pattern)',
-                     'from __main__ import v2, text, pattern', number=1000))
-
-v2(text, pattern)
-v1(text, pattern)
+fileStr = fileStr.split("\n", 1)[1]
+text = fileStr.replace("\n", "")
+before = time.time()
+# # alphabetSize is chosen as 4 here because there are only 4 bases in the genome sequence A,C,T and G
+RKRollingHash(text, pattern, alphabetSize=4)
+after = time.time()
+print(after-before)

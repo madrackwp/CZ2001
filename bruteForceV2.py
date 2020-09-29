@@ -1,48 +1,57 @@
-import timeit
-
-# 1. Extract the part of the string to be tested
-# 2. Compare the sliced string with the pattern
-# 2.1 If the first char is the same, move on to the next char
-# 2.2 If there is a char that is not the same, break out
-# 3. If all the letters are similar, then add the index of the first char to the array to be printed
-
-# This will be the text where the algorithm will scan the pattern for
-# text = "ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCGCTA"
-# text = "ADADADADADADADADADADADADAD"
-# text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
-# Added 2 more patterns to front and back of text
-text = open('genomeSequence.txt', 'r').read().upper()
-# This is the pattern that the algorithm will scan for
-pattern = "TTTATACCTTCC"
-# pattern = "DAD"
+import time
+from Bio import SeqIO
+import fastaparser
 
 
 def bruteForce(text, pattern):
     patternLength = len(pattern)
-    # print(patternLength)
     textLength = len(text)
-    print(textLength)
-    print(text[10])
-
     indexStart = 0
     indexEnd = patternLength
-    indexList = list()
-    # print(type(indexList))
+    indexArray = []
 
     while (indexEnd != len(text)+1):
-        textToScan = text[indexStart:indexEnd]
-        # print(textToScan, len(textToScan))
-
+        textToScan = str(text[indexStart:indexEnd])
         if (textToScan == pattern):
-            # print("SAME @ index: ", indexStart)
-            indexList.append(indexStart+1)
-        # else:
-        #     print("DIFF")
+            indexArray.append(indexStart+1)
         indexStart += 1
         indexEnd += 1
 
-    # print(indexList)
+    if (indexArray):
+        print(indexArray)
+    else:
+        print("No matches found!")
 
 
-print(timeit.timeit('bruteForce(text, pattern)',
-                    'from __main__ import bruteForce, text, pattern', number=1))
+path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+pattern = "AAAACCGACGGTC"
+f = open(path, "r")
+fileStr = f.read()
+f.close()
+
+fileStr = fileStr.split("\n", 1)[1]
+text = fileStr.replace("\n", "")
+
+# text = open('genomeSequence2.txt', 'r').read().upper()
+# text = next(SeqIO.parse(path, "fasta"))
+# print(type(text))
+# This is the pattern that the algorithm will scan for,
+# pattern = "AGAGAT"
+# pattern = "DAD"
+# print(repr(text.seq))
+# with open(path) as fasta_file:
+#     parser = fastaparser.Reader(fasta_file)
+#     for seq in parser:
+#         # seq is a FastaSequence object
+#         print('ID:', seq.id)
+#         print('Description:', seq.description)
+#         print('Sequence:', seq.sequence_as_string())
+#         print()
+
+
+# print(fileStr)
+# print(len(fileStr))
+before = time.time()
+bruteForce(text, pattern)
+after = time.time()
+print(after-before)
