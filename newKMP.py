@@ -98,23 +98,20 @@ def ImprovedKMPAlgo(text, pattern, dictionary):
     else:
         print("Pattern found at Positions:", end=" ")
         print(indexList)
-<<<<<<< HEAD
-=======
 
->>>>>>> 6cb78a2a7fe99b0220f13748468577b5008db2a7
 
 # text = open('genomeSequence2.txt', 'r').read().upper()
 # pattern = "TGACCTATGAT"
 # text = "TTTATACCTTCCATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACGTGGCTTTGGAGACTCCGTGGAGGAGGTCTTATCAGAGGCACGTCAACATCTTAAAGATGGCACTTGTGGCTTAGTAGAAGTTGAAAAAGGCGTTTTGCCTCAACTTGAACAGCCCTATGTGTTCATCAAACGTTCGGATGCTCGAACTGCACCTCATGGTCATGTTATGGTTGAGCTGGTAGCAGAACTCGAAGGCATTCAGTACGGTCGTAGTGGTGAGACACTTGGTGTCCTTGTCCCTCATGTGGGCGAAATACCAGTGGCTTACCGCAAGGTTCTTCTTCGTAAGAACGGTAATAAAGGAGCTGGTGGCCATAGTTACGGCGCCGATCTAAAGTCATTTGACTTAGGCGACGAGCTTGGCACTGATCCTTATGAAGATTTTCAAGAAAACTGGAACACTAAACATAGCAGTGGTGTTACCCGTGAACTCATGCGTGAGCTTAACGGAGGGGCATACACTCGCTATTTATACCTTCC"
-path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
-pattern = "AAAACCGACGGTC"
+path = "C:\\Users\\user\\Desktop\\Repositories\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+# path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+pattern = "CAAGCAAACTGATTCAAG"
 f = open(path, "r")
 fileStr = f.read()
 f.close()
 
 fileStr = fileStr.split("\n", 1)[1]
 text = fileStr.replace("\n", "")
-before = time.time()
 length = len(pattern)
 characters = list(set(pattern))
 len_characters = len(characters)
@@ -122,20 +119,14 @@ lps = [0]*length
 computeLPSArray(pattern, length, lps)
 FT = np.empty((len_characters, length))
 my_dict = computeFailureTable(characters, pattern, lps, FT)
-<<<<<<< HEAD
-printFailureTable(lps,my_dict)
-=======
 printFailureTable(lps, my_dict)
->>>>>>> 6cb78a2a7fe99b0220f13748468577b5008db2a7
+before = time.time()
 ImprovedKMPAlgo(text, pattern, my_dict)
 after = time.time()
 print(after-before)
 
 
-<<<<<<< HEAD
 # print(timeit.timeit('ImprovedKMPAlgo(text, pattern, my_dict)',
                     # 'from __main__ import ImprovedKMPAlgo, text, pattern, my_dict', number=1000))
-=======
 # print("Average time for 1000 iterations: {}".format(timeit.timeit('ImprovedKMPAlgo(text, pattern, my_dict)',
 #   'from __main__ import ImprovedKMPAlgo, text, pattern, my_dict', number=1000)/1000))
->>>>>>> 6cb78a2a7fe99b0220f13748468577b5008db2a7

@@ -1,6 +1,6 @@
 import timeit
 import time
-from Bio import SeqIO
+# from Bio import SeqIO
 
 
 def hashing(toHash, alphabetSize):
@@ -78,8 +78,9 @@ def RKRollingHash(text, pattern, alphabetSize):
 # text = str(text)
 # print(len(text))
 # pattern = "TGACCTATGAT"
-path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
-pattern = "AAAACCGACGGTC"
+path = "C:\\Users\\user\\Desktop\\Repositories\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+# path = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\ncbi-genomes-2020-09-11\\GCF_000006945.2_ASM694v2_genomic.fna"
+pattern = "TCTTTCCGGGTCGCTCTCTTTT"
 f = open(path, "r")
 fileStr = f.read()
 f.close()
