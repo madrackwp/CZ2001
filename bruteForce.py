@@ -1,20 +1,19 @@
-# This will be the text where the algorithm will scan the pattern for
-text = "ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCGCTA"
-# This is the pattern that the algorithm will scan for
-pattern = "TTTATACCTTCC"
-patternMatch = 0
-indexLocale = []
-indexTemp = 0
+def bruteForce(text, pattern):
+    patternLength = len(pattern)
+    textLength = len(text)
+    indexStart = 0
+    indexEnd = patternLength
+    indexArray = []
 
-for char in text:
-    if (char == pattern[patternMatch]):
-        if (patternMatch == 0):
-            indexTemp = text.index(char)
-        patternMatch += 1
-    if (patternMatch == len(pattern)):
-        print("found!")
-        patternMatch = 0
-        indexLocale.append(indexTemp)
-        indexTemp = None
+    while (indexEnd != len(text)+1):
+        textToScan = str(text[indexStart:indexEnd])
+        if (textToScan == pattern):
+            indexArray.append(indexStart+1)
+        indexStart += 1
+        indexEnd += 1
 
-print(indexLocale)
+    if (indexArray):
+        print(indexArray)
+    else:
+        print("No matches found!")
+
