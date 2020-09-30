@@ -9,3 +9,9 @@ To change the DNA sequenced to be searched:
 4. Ensure that the '\' operator is used before every backslash in the path example 
    - Path copied from the directory: C:\Users\John\Documents\CZ2001\CZ2001\DNASequences\GCF_000006945.2_ASM694v2_genomic.fna
    - String to be placed in path: C:\\Users\\John\\Documents\\CZ2001\\CZ2001\\DNASequences\\GCF_000006945.2_ASM694v2_genomic.fna
+
+Done by:
+Goh Wei Pin
+Tan Keng Kai Luke
+Lynn Enhua Masillamoni 
+Jonathan Chang Ji Ming
