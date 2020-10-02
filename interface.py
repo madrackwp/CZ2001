@@ -1,12 +1,13 @@
-from boyersMoore import boyersMoore
+from boyersmoore import boyersMoore
 from KMP import KMPAlgo
 from bruteForce import bruteForce
 import time
 
 
 
+
 #==================================EDIT THIS ONLY AND NOTHING ELSE=============================================
-PATH = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\DNASequences\\GCF_000006945.2_ASM694v2_genomic.fna"
+PATH = "C:\\Users\\user\\Desktop\\Repositories\\CZ2001\\DNASequences\\GCF_000006945.2_ASM694v2_genomic.fna"
 #==============================================================================================================
 
 pattern = "TCTTTCCGGGTCGCTCTCTTTT"
@@ -24,7 +25,7 @@ while True:
         pattern = "TCTTTCCGGGTCGCTCTCTTTT"
         print("Inbuilt pattern = TCTTTCCGGGTCGCTCTCTTTT")
     elif (int(patternSelector) == 2):
-        pattern = input("Please the pattern to be searched for (ACTG Only)").upper()
+        pattern = input("Please select the pattern to be searched for (ACTG Only)\n").upper()
         print(f"Custom pattern = {pattern}")
     else:
         pattern = None
