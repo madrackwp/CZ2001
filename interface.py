@@ -7,7 +7,7 @@ import time
 
 
 #==================================EDIT THIS ONLY AND NOTHING ELSE=============================================
-PATH = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\DNASequences\\GCF_000006945.2_ASM694v2_genomic.fna"
+PATH = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\DNASequences\  \GCF_000006945.2_ASM694v2_genomic.fna"
 #==============================================================================================================
 
 pattern = "TCTTTCCGGGTCGCTCTCTTTT"
