@@ -12,8 +12,11 @@ def bruteForce(text, pattern):
         indexStart += 1
         indexEnd += 1
 
-    if (indexArray):
-        print(indexArray)
-    else:
-        print("No matches found!")
+    return indexArray
+
+    # if (indexArray):
+    #     return indexArray
+    #     print(indexArray)
+    # else:
+    #     print("No matches found!")
 

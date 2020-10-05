@@ -54,10 +54,11 @@ def KMPAlgo(text, pattern):
             indexList.append(a-b+1)
             b = lps[b-1]
 
-    if not indexList:
-        print("Pattern not found")
-    else:
-        print("Pattern found at Positions:", end=" ")
-        print(indexList)
+    # if not indexList:
+    #     print("Pattern not found")
+    # else:
+    #     print("Pattern found at Positions:", end=" ")
+    #     print(indexList)
+    return indexList
 
 

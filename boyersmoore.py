@@ -21,10 +21,11 @@ def boyersMoore(text, pattern):
                 indexList.append(i-n+2)
         if badMatch==False: #This is the iterator when it is not a mismatch
             i+=1
-    if (indexList):
-        print(indexList)
-    else:
-        print("No matches found!")
+    # if (indexList):
+    #     print(indexList)
+    # else:
+    #     print("No matches found!")
+    return indexList
 
 
 def genBadMatchTable(text):
@@ -33,11 +34,11 @@ def genBadMatchTable(text):
     for index in range(m):
         char = text[index]
         value = m - index -1
-        if index == m-1:
+        if index == m-1: #This is for the last index char
             pass
         else:
             if badMatchTable.get(char) != None: #When the table does not contain that char
-                badMatchTable[char] = value
+                badMatchTable[char] = value #Create the dictionary key with the char as the key and value as the value
             else: 
                 badMatchTable[char] = value 
     return badMatchTable

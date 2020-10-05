@@ -1,4 +1,4 @@
-from boyersmoore import boyersMoore
+from boyersMoore import boyersMoore
 from KMP import KMPAlgo
 from bruteForce import bruteForce
 import time
@@ -7,7 +7,7 @@ import time
 
 
 #==================================EDIT THIS ONLY AND NOTHING ELSE=============================================
-PATH = "C:\\Users\\user\\Desktop\\Repositories\\CZ2001\\DNASequences\\GCF_000006945.2_ASM694v2_genomic.fna"
+PATH = "C:\\Users\\madra\\Documents\\CZ2001\\CZ2001\\DNASequences\\GCF_000006945.2_ASM694v2_genomic.fna"
 #==============================================================================================================
 
 pattern = "TCTTTCCGGGTCGCTCTCTTTT"
@@ -36,27 +36,33 @@ while True:
         print("=======================CHOOSE YOUR ALGORITHM==============================")
         print("==========================================================================")
         userInput = input("Select 1 for bruteforce, 2 for KMP, 3 for Boyers Moore, 4 to quit\n")
+        indexArray=None
         if (int(userInput) == 4):
             print("Goodbye!")
             break
         elif (int(userInput) == 1):
             before = time.time()
-            bruteForce(text,pattern)
+            indexArray = bruteForce(text,pattern)
             after = time.time()
             duration = after - before
             print(f"\nTime taken: {duration}s")
         elif (int(userInput) == 2):
             before = time.time()
-            KMPAlgo(text, pattern)
+            indexArray = KMPAlgo(text, pattern)
             after = time.time()
             duration = after - before
             print(f"\nTime taken: {duration}s")
         elif (int(userInput) == 3):
             before = time.time()
-            boyersMoore(text, pattern)
+            indexArray = boyersMoore(text, pattern)
             after = time.time()
             duration = after - before
             print(f"\nTime taken: {duration}s")
         else:
             print("Please enter a valid input!")
+
+        if (indexArray == None):
+            print("Patter not found!")
+        else:
+            print(indexArray)
 
